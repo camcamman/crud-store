@@ -28,10 +28,23 @@ mainList.get("/", (req, res, next) => {
             res.status(500).send(err)
             return next (err)
         }
-
         return res.status(200).send(stuff)
     })
     // console.log('got')
+})
+
+//get one
+mainList.get("/:stuffId", (req, res, next) => {
+    const id = req.params.stuffId
+//     inventory.findById(id => )
+    //db.myCol.find({_id : ObjectId("60f532903ded77001064ae92")});
+    inventory.find({_id: id}, (err, stuff) => {
+        if (err) {
+            res.status(500).send(err)
+            return next (err)
+        }
+        return res.status(200).send(stuff)
+    })
 })
 
 //add one
