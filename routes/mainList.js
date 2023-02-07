@@ -59,5 +59,36 @@ mainList.post("/", (req, res, next) => {
     })
 })
 
+//delete one 
+mainList.delete("/:stuffid", (req, res, next) => {
+    const id = req.params.stuffid
+    inventory.deleteOne((id) => {
+        if (err) {
+            res.status(500).send(err)
+            return next (err)
+        }
+        return res.status(200).send("deleted item")
+    })
+})
+
+//edit one 
+mainList.put("/:stuffid", (req, res, next) => {
+    const id = req.params.stuffid
+    const newStuff = req.body
+    inventory.updateOne(
+        {_id: id}, 
+        newStuff, 
+        // {new: true}, 
+        (err, updatedStuff) => {
+
+        if (err) {
+            res.status(500).send(err)
+            return next (err)
+        }
+
+        return res.status(200).send(updatedStuff)
+    })
+})
+
 
 module.exports = mainList
