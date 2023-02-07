@@ -19,9 +19,11 @@ mongoose.connect('mongodb://127.0.0.1:27017/InventoryDB',
 {useNewUrlParser: true},
 (msg) => console.log(msg ? msg : "connected to DB"));
 
+
+//get all 
 mainList.get("/", (req, res, next) => {
     inventory.find((err, stuff) => {
-        console.log("finding")
+        // console.log("finding")
         if (err) {
             res.status(500).send(err)
             return next (err)
@@ -29,8 +31,19 @@ mainList.get("/", (req, res, next) => {
 
         return res.status(200).send(stuff)
     })
-    console.log('got')
+    // console.log('got')
+})
 
+//add one
+mainList.post("/", (req, res, next) => {
+    const newStuff = new inventory(req.body)
+    newStuff.save((err, savedStuff) => {
+        if (err) {
+            res.status(500).send(err)
+            return next (err)
+        }
+        return res.status(200).send(savedStuff)
+    })
 })
 
 
