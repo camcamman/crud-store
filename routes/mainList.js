@@ -62,12 +62,15 @@ mainList.post("/", (req, res, next) => {
 //delete one 
 mainList.delete("/:stuffid", (req, res, next) => {
     const id = req.params.stuffid
-    inventory.deleteOne((id) => {
-        if (err) {
+    console.log(id)
+    // inventory.findOneAndDelete({_id: req.params.stuffid}, (err, deletedItem) => {
+    inventory.findOneAndDelete({_id: id}, (err, deletedItem) => {
+    console.log(id)
+    if (err) {
             res.status(500).send(err)
             return next (err)
         }
-        return res.status(200).send("deleted item")
+        return res.status(200).send(`${deletedItem} is deleted`)
     })
 })
 
@@ -75,10 +78,10 @@ mainList.delete("/:stuffid", (req, res, next) => {
 mainList.put("/:stuffid", (req, res, next) => {
     const id = req.params.stuffid
     const newStuff = req.body
-    inventory.updateOne(
+    inventory.findOneAndUpdate(
         {_id: id}, 
         newStuff, 
-        // {new: true}, 
+        {new: true}, 
         (err, updatedStuff) => {
 
         if (err) {
